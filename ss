@@ -219,5 +219,6 @@ $server_connections = {}
 $l.warn ['script started on',PORT]
 $env.update_process
 $l.debug($env.inspect)
+$l.debug(Process.pid)
 Process.daemon
 program_loop(sock)
