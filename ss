@@ -205,7 +205,7 @@ class Environment
 end
 
 
-sock = SocketServer.new(server_port)
+sock = SocketServer.new(PORT)
 
 $l = Logger.new($stderr,1,512)
 $l.level = Logger::WARN
