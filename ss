@@ -4,7 +4,6 @@ require 'logger'
 
 DEBUG = true
 PORT = 25800
-sock = SocketServer.new(server_port)
 
 def program_loop(sockets)
   sockets
@@ -206,6 +205,7 @@ class Environment
 end
 
 
+sock = SocketServer.new(server_port)
 
 $l = Logger.new($stderr,1,512)
 $l.level = Logger::WARN
