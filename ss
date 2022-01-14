@@ -218,4 +218,5 @@ $white_list = ['localhost','127.0.0.1','0.0.0.0',Socket.ip_address_list.to_s[/ (
 $server_connections = {}
 $l.warn ['script started with on',PORT]
 $env.update_process
+Process.daemon
 program_loop(sock)
