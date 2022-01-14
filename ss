@@ -207,8 +207,9 @@ end
 
 
 sock = SocketServer.new(PORT)
+`touch /tmp/ss.log`
 
-$l = Logger.new($stderr,1,512)
+$l = Logger.new('/tmp/ss.log',1,512)
 $l.level = Logger::WARN
 $l.level = Logger::DEBUG if DEBUG
 
