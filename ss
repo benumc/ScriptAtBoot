@@ -216,7 +216,7 @@ $env = Environment.new
 
 $white_list = ['localhost','127.0.0.1','0.0.0.0',Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]]
 $server_connections = {}
-$l.warn ['script started with on',PORT]
+$l.warn ['script started on',PORT]
 $env.update_process
 $l.debug($env.inspect)
 Process.daemon
