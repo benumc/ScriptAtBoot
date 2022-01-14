@@ -41,6 +41,7 @@ class SocketServer < Socket
     @port = port
     @socks = []
     @lsof = RUBY_PLATFORM.include?('linux') ? 'lsof' : '/usr/sbin/lsof'
+    local_ip(Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1])
     connect(local_ip, self, port)
   end
   
@@ -206,7 +207,6 @@ end
 
 
 sock = SocketServer.new(PORT)
-p sock
 
 $l = Logger.new($stderr,1,512)
 $l.level = Logger::WARN
@@ -219,4 +219,3 @@ $server_connections = {}
 $l.warn ['script started with on',PORT]
 $env.update_process
 program_loop(sock)
-
