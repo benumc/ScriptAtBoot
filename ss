@@ -41,7 +41,7 @@ class SocketServer < Socket
     @port = port
     @socks = []
     @lsof = RUBY_PLATFORM.include?('linux') ? 'lsof' : '/usr/sbin/lsof'
-    local_ip(Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1])
+    local_ip = Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]
     connect(local_ip, self, port)
   end
   
