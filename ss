@@ -206,6 +206,7 @@ end
 
 
 sock = SocketServer.new(PORT)
+p sock
 
 $l = Logger.new($stderr,1,512)
 $l.level = Logger::WARN
