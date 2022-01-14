@@ -1,14 +1,13 @@
-#!/usr/bin/env ruby
-exit unless DATA.flock(File::LOCK_NB | File::LOCK_EX)
-
 require 'socket'
 include Socket::Constants
 require 'logger'
 
 DEBUG = true
+PORT = 25800
+sock = SocketServer.new(server_port)
 
-def program_loop(server_port)
-  sockets = SocketServer.new(server_port)
+def program_loop(sockets)
+  sockets
   t = $env.mtime
   loop do
     sockets.read_lines
@@ -216,10 +215,7 @@ $env = Environment.new
 
 $white_list = ['localhost','127.0.0.1','0.0.0.0',Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]]
 $server_connections = {}
-port, protocol = $env.connection_info
-$l.warn ['script started with',protocol,'on',port]
+$l.warn ['script started with on',PORT]
 $env.update_process
-program_loop(port.to_i)
+program_loop(sock)
 
-__END__
-DO NOT REMOVE: required for the DATA object above.
