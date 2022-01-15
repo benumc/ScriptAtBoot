@@ -73,6 +73,8 @@ class SocketServer < Socket
     s.ip = info.ip_address
     s.port = info.ip_port
     s.name = component_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
+    pn = $process_map(s.name)
+    $l.debug pn
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(s.name)
     `chmod +x #{s.script}`
