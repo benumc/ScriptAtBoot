@@ -72,15 +72,16 @@ class SocketServer < Socket
     s.extend SocketMethods
     s.ip = info.ip_address
     s.port = info.ip_port
-    s.name = profile_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
+    s.name = component_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(s.name)
     `chmod +x #{s.script}`
     pr = Process.spawn("#{s.script}", :in => sock, :out => sock, :err => [:child, :out])
     Process.detach pr
+    close_sock(s)
   end
   
-  def profile_name(port)
+  def component_name(port)
     pid = `#{@lsof} -i TCP:#{port} | grep avc`.match(/\s(\d+)\s/)
     @pid = pid
     pid && `ps -o command= -p #{pid[1]}`.chop.split('avc ')[1] 
@@ -92,13 +93,6 @@ class SocketServer < Socket
     $l.debug(['closing',sock])
     socks.delete sock
     sock.close rescue nil
-  end
-  
-  def by_name(name,origin)
-    return name if name.respond_to?(:puts)
-    return nil unless name.respond_to?(:to_str)
-    s = socks.select{|sock| name.include?(sock.name)}
-    s[0] || serv_connect(name.to_str,origin)
   end
   
 
