@@ -76,7 +76,8 @@ class SocketServer < Socket
     s.name = profile_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(s.name)
-    pr = Process.spawn("#{req} #{args}", :in => sock, :out => sock, :err => [:child, :out])
+    `chmod +x #{s.script}`
+    pr = Process.spawn("#{s.script}", :in => sock, :out => sock, :err => [:child, :out])
     Process.detach pr
   end
   
@@ -178,6 +179,7 @@ class Environment
         output_file.write output
       end
     end
+    out_file
   end
   
   def mtime
