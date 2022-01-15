@@ -7,13 +7,13 @@ PORT = 25800
 
 def program_loop(sockets)
   sockets
-  t = $env.mtime
+  mt = $env.mtime
   $l.debug("Script file last changed at #{t}. Awaiting connection on port #{PORT}")
   loop do
     sockets.accept_all
     
-    if $env.mtime != t
-      $l.error ['new control bridge profile found',t,$env.mtime,'exiting']
+    if $env.mtime != mt
+      $l.error ['new control bridge profile found',mt,$env.mtime,'exiting']
       $env.update_process
       $l.error ['kill process',$cli.process_ids]
       Process.kill('HUP', $env.process_ids[0])
@@ -42,12 +42,17 @@ class SocketServer < Socket
     @port = port
     @socks = []
     @lsof = RUBY_PLATFORM.include?('linux') ? 'lsof' : '/usr/sbin/lsof'
-    local_ip = Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]
-    connect(local_ip, self, port)
+    @local_ip = Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]
+    connect(@local_ip, self, port)
+    @t = Time.now
   end
   
   def accept_all
     ready = IO.select([self],nil,nil,10)
+    if (Time.now - t) > 30
+      UDPSocket.new.send("script_launcher:YES\n", 0, @local_ip, 25800)
+      @t = Time.now
+    end
     return unless ready
     accept
     
