@@ -43,7 +43,7 @@ class SocketServer < Socket
     @socks = []
     @lsof = RUBY_PLATFORM.include?('linux') ? 'lsof' : '/usr/sbin/lsof'
     @local_ip = Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]
-    connect(@local_ip, self, port)
+    connect('127.0.0.1', self, port)
     @t = Time.now
   end
   
@@ -69,12 +69,6 @@ class SocketServer < Socket
   def accept
     $l.debug ['accepting connections on', port]
     s,info = accept_nonblock
-    unless $white_list.include?(info.ip_address)
-      $l.warn ["new connection from:",info.ip_address,"not found in whitelist.",$white_list ,"closing"]
-      s.puts("Unauthorized. Closing")
-      s.close
-      return true
-    end
     s.extend SocketMethods
     s.ip = info.ip_address
     s.port = info.ip_port
@@ -230,8 +224,6 @@ $l.level = Logger::DEBUG if DEBUG
 
 $env = Environment.new
 
-$white_list = ['localhost','127.0.0.1','0.0.0.0',Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]]
-$server_connections = {}
 $l.warn ['script started on',PORT]
 $env.update_process
 $l.debug($env.inspect)
