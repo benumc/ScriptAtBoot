@@ -8,7 +8,7 @@ PORT = 25800
 def program_loop(sockets)
   sockets
   mt = $env.mtime
-  $l.debug("Script file last changed at #{t}. Awaiting connection on port #{PORT}")
+  $l.debug("Script file last changed at #{mt}. Awaiting connection on port #{PORT}")
   loop do
     sockets.accept_all
     
