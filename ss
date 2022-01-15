@@ -9,7 +9,7 @@ def program_loop(sockets)
   sockets
   t = $env.mtime
   loop do
-    sockets.read_lines
+    sockets.accept_all
     
     if $env.mtime != t
       $l.error ['new control bridge profile found',t,$env.mtime,'exiting']
@@ -43,6 +43,12 @@ class SocketServer < Socket
     @lsof = RUBY_PLATFORM.include?('linux') ? 'lsof' : '/usr/sbin/lsof'
     local_ip = Socket.ip_address_list.to_s[/ ((?!127)\d\d?\d?\.[0-9]+\.[0-9]+\.[0-9]+)/,1]
     connect(local_ip, self, port)
+  end
+  
+  def accept_all
+    ready = select([self],nil,nil,10)
+    return unless ready
+    accept
   end
   
   def connect(addr, s, p)
