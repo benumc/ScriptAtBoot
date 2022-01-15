@@ -49,7 +49,7 @@ class SocketServer < Socket
   
   def accept_all
     ready = IO.select([self],nil,nil,10)
-    if (Time.now - t) > 30
+    if (Time.now - @t) > 30
       UDPSocket.new.send("script_launcher:YES\n", 0, @local_ip, 25800)
       @t = Time.now
     end
