@@ -73,7 +73,7 @@ class SocketServer < Socket
     s.ip = info.ip_address
     s.port = info.ip_port
     s.name = component_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
-    pn = $process_map(s.name)
+    pn = profile_name(s.name)
     $l.debug pn
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(s.name)
@@ -87,6 +87,11 @@ class SocketServer < Socket
     pid = `#{@lsof} -i TCP:#{port} | grep avc`.match(/\s(\d+)\s/)
     @pid = pid
     pid && `ps -o command= -p #{pid[1]}`.chop.split('avc ')[1] 
+  end
+  
+  def profile_name(component_name)
+    s = %Q[source_component_name="#{component_name}" source_logical_component="([^"]+)"]
+    r = `grep -i '#{s}' '#{$env.rpm_path}userConfig.rpmConfig/serviceImplementation-serviceDefinitionOnly.xml'`
   end
   
   private
