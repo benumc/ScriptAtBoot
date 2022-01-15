@@ -46,7 +46,7 @@ class SocketServer < Socket
   end
   
   def accept_all
-    ready = select([self],nil,nil,10)
+    ready = IO.select([self],nil,nil,10)
     return unless ready
     accept
   end
