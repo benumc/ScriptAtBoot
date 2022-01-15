@@ -8,6 +8,7 @@ PORT = 25800
 def program_loop(sockets)
   sockets
   t = $env.mtime
+  $l.debug("Script file last changed at #{t}. Awaiting connection on port #{PORT}")
   loop do
     sockets.accept_all
     
@@ -46,7 +47,6 @@ class SocketServer < Socket
   end
   
   def accept_all
-    $l.debug("awaiting connection on #{PORT}")
     ready = IO.select([self],nil,nil,10)
     return unless ready
     accept
