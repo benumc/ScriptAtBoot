@@ -46,9 +46,11 @@ class SocketServer < Socket
   end
   
   def accept_all
+    $l.debug("awaiting connection on #{PORT}")
     ready = IO.select([self],nil,nil,10)
     return unless ready
     accept
+    
   end
   
   def connect(addr, s, p)
