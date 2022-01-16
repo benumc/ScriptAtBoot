@@ -51,7 +51,7 @@ class SocketServer < Socket
     ready = IO.select([self],nil,nil,10)
     if (Time.now - @t) > 30
       $l.debug "sending running to  #{@local_ip}"
-      UDPSocket.new.send("\nscript_launcher:YES\n", 0, @local_ip, 25800)
+      UDPSocket.new.send("\n----script_launcher-YES\n", 0, @local_ip, 25800)
       @t = Time.now
     end
     return unless ready
