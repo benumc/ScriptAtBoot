@@ -150,7 +150,7 @@ end
 class Environment
 
   attr_reader :profile_name, :profile_path, :script_path, :log_path, :home_path, \
-              :profiles_path, :rpm_path, :lock_path, :bp_names, :process_ids
+              :profiles_path, :rpm_path, :lock_path, :bp_names, :process_ids, :scli
 
   def initialize
     @profile_name = 'script_launcher'
