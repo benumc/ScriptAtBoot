@@ -177,7 +177,7 @@ class Environment
     out_file = @home_path + name
     $l.debug "split #{in_file} to #{out_file}"
     File.open(in_file, 'r') do |input_file|
-      output = input_file.read.split(/<\/component>\s+<!-\-\[CDATA\[.*\n/)[1]
+      output = input_file.read.split('#!/')[1]
       File.open(out_file, 'w') do |output_file|
         output_file.write output
       end
