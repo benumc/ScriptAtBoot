@@ -76,7 +76,7 @@ class SocketServer < Socket
     pn = profile_name(s.name)
     $l.debug pn
     $l.warn ['new connection from', s.name, 'on port', port]
-    s.script = $env.profile_split(s.name)
+    s.script = $env.profile_split(pn)
     `chmod +x #{s.script}`
     pr = Process.spawn("#{s.script}", :in => sock, :out => sock, :err => [:child, :out])
     Process.detach pr
