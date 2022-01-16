@@ -95,8 +95,8 @@ class SocketServer < Socket
     $l.debug r
     m = r[0].match(/source_logical_component="([^"]+)"/)[1]
     $l.debug m
-    c = `grep -i '#{r}' '#{$env.rpm_path}userConfig.rpmConfig/componentProfiles/'`
-    $l.debug c
+    c = `grep -i '#{m}' '#{$env.profiles_path}'`
+    $l.debug ['profile name',c]
   end
   
   private
