@@ -80,7 +80,7 @@ class SocketServer < Socket
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(pn)
     `chmod +x #{s.script}`
-    pr = Process.spawn("#{s.script}", :in => s, :out => s, :err => [:child, :out])
+    pr = Process.spawn("ruby #{s.script}", :in => s, :out => s, :err => [:child, :out])
     Process.detach pr
     close_sock(s)
   end
