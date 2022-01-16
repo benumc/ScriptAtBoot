@@ -53,7 +53,7 @@ class SocketServer < Socket
       m = "#{$env.scli} writestate '#{$env.bp_names[0]}.running' 'YES'"
       $l.debug "sending running to  #{m}"
       
-      `m`
+      `#{m}`
       @t = Time.now
     end
     return unless ready
