@@ -74,7 +74,6 @@ class SocketServer < Socket
     s.port = info.ip_port
     s.name = component_name(info.ip_port) || "#{info.ip_address}:#{info.ip_port}"
     pn = profile_name(s.name)
-    $l.debug pn
     $l.warn ['new connection from', s.name, 'on port', port]
     s.script = $env.profile_split(pn)
     `chmod +x #{s.script}`
@@ -92,7 +91,6 @@ class SocketServer < Socket
   def profile_name(component_name)
     s = %Q[source_component_name="#{component_name}" source_logical_component=]
     r = `grep -i '#{s}' '#{$env.rpm_path}userConfig.rpmConfig/serviceImplementation-serviceDefinitionOnly.xml'`.split("\n")
-    $l.debug r
     m = r[0].match(/source_logical_component="([^"]+)"/)[1]
     $l.debug m
     c = `grep -i '#{m}' '#{$env.profiles_path}'`
