@@ -92,9 +92,10 @@ class SocketServer < Socket
     s = %Q[source_component_name="#{component_name}" source_logical_component=]
     r = `grep -i '#{s}' '#{$env.rpm_path}userConfig.rpmConfig/serviceImplementation-serviceDefinitionOnly.xml'`.split("\n")
     m = r[0].match(/source_logical_component="([^"]+)"/)[1]
-    $l.debug [m, "grep -i '#{m}' '#{$env.profiles_path}'"]
+    #$l.debug [m, "grep -i '#{m}' '#{$env.profiles_path}'"]
     c = `grep -r '#{m}' '#{$env.profiles_path}'`.split("\n")[0].match(/componentProfiles\/\/?([^:]+):/)[1]
     $l.debug ['profile name',c]
+    c
   end
   
   private
