@@ -91,7 +91,10 @@ class SocketServer < Socket
   
   def profile_name(component_name)
     s = %Q[source_component_name="#{component_name}" source_logical_component=]
-    r = `grep -i '#{s}' '#{$env.rpm_path}userConfig.rpmConfig/serviceImplementation-serviceDefinitionOnly.xml'`.split("\n")[0].match(/source_logical_component="([^"]+)"/)[1]
+    r = `grep -i '#{s}' '#{$env.rpm_path}userConfig.rpmConfig/serviceImplementation-serviceDefinitionOnly.xml'`.split("\n")
+    $l.debug r
+    m = r[0].match(/source_logical_component="([^"]+)"/)[1]
+    $l.debug m
     c = `grep -i '#{r}' '#{$env.rpm_path}userConfig.rpmConfig/componentProfiles/'`
     $l.debug c
   end
