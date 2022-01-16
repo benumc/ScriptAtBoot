@@ -50,7 +50,7 @@ class SocketServer < Socket
   def accept_all
     ready = IO.select([self],nil,nil,10)
     if (Time.now - @t) > 30
-      m = "#{$env.scli} writestate '#{$env.bpnames[0]}.running' 'YES'"
+      m = "#{$env.scli} writestate '#{$env.bp_names[0]}.running' 'YES'"
       $l.debug "sending running to  #{m}"
       
       `m`
