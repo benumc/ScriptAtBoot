@@ -50,8 +50,10 @@ class SocketServer < Socket
   def accept_all
     ready = IO.select([self],nil,nil,10)
     if (Time.now - @t) > 30
-      $l.debug "sending running to  #{@local_ip}"
-      UDPSocket.new.send("\n----script_launcher-YES\n", 0, @local_ip, 25800)
+      m = "#{$env.scli} writestate '#{$env.bpnames[0]}.running' 'YES'"
+      $l.debug "sending running to  #{m}"
+      
+      `m`
       @t = Time.now
     end
     return unless ready
