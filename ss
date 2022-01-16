@@ -173,10 +173,9 @@ class Environment
   end
   
   def profile_split(name)
-    $l.debug "split #{name}"
     in_file = @profiles_path + name
     out_file = @home_path + name
-    $l.debug [in_file,out_file]
+    $l.debug "split #{in_file} to #{out_file}"
     File.open(in_file, 'r') do |input_file|
       output = input_file.read.split(/<\/component>\s+<!-\-\[CDATA\[.*\n/)[1]
       File.open(out_file, 'w') do |output_file|
